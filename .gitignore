@@ -1,0 +1,7 @@
+sdkconfig
+Kconfig
+*.lock
+/.git/
+/.vscode/
+/managed_components/
+/build/
