@@ -1,53 +1,79 @@
-| Supported Targets | ESP32 | ESP32-C2 | ESP32-C3 | ESP32-C6 | ESP32-H2 | ESP32-P4 | ESP32-S2 | ESP32-S3 | Linux |
-| ----------------- | ----- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | ----- |
+# **两轮智能平衡车项目（基于 ESP32-P4）**
 
-# Hello World Example
+## **项目简介**
+本项目使用 Espressif 的最新 **ESP32-P4 微控制器**，结合 MPU6050 陀螺仪/加速度计和电机驱动模块，开发一款两轮智能平衡车。该项目实现了姿态控制、速度控制和实时数据采集，是物联网和机器人学习的一个优秀实践案例。
 
-Starts a FreeRTOS task to print "Hello World".
+---
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+## **功能特点**
+- **姿态检测与平衡控制**：
+  使用 MPU6050 获取俯仰角和角速度，结合 PID 算法实现两轮平衡。
+- **速度控制**：
+  通过 PWM 信号控制直流电机，调节小车的前进和后退速度。
+- **无线通信**：
+  使用 ESP32-P4 的 Wi-Fi/BLE 功能，实现远程控制与数据监控。
+- **可扩展性**：
+  支持拓展传感器（超声波、摄像头）和模块（如舵机、语音模块）。
 
-## How to use example
+---
 
-Follow detailed instructions provided specifically for this example.
+## **硬件连接**
+### **主要组件**
+1. **ESP32-P4 微控制器**
+2. **MPU6050 加速度计/陀螺仪**
+3. **电机驱动模块（如 L298N 或 TB6612）**
+4. **直流电机**
+5. **电源模块（7.4V - 12V）**
+6. **电池**
 
-Select the instructions depending on Espressif chip installed on your development board:
+### **硬件连接示意**
+| **模块**      | **ESP32-P4 引脚** |
+|---------------|--------------------|
+| **MPU6050 SDA** | GPIO4            |
+| **MPU6050 SCL** | GPIO5            |
+| **电机驱动 IN1** | GPIOx            |
+| **电机驱动 IN2** | GPIOx            |
+| **电机驱动 IN3** | GPIOx            |
+| **电机驱动 IN4** | GPIOx            |
+| **PWM 输出**     | GPIOx、GPIOx    |
+| **电源 GND**     | GND               |
 
-- [ESP32 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/stable/get-started/index.html)
-- [ESP32-S2 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/get-started/index.html)
+---
 
+## **软件架构**
+### **主要模块**
+1. **姿态检测**：
+   使用 MPU6050 获取俯仰角和角速度，计算小车的实时姿态。
+2. **PID 控制**：
+   实现平衡控制和速度控制，通过调整电机的 PWM 信号保持小车平衡。
+3. **通信模块**：
+   提供远程控制接口，支持 Wi-Fi 或 BLE 通信。
+4. **调试与监控**：
+   将实时数据通过串口或无线方式输出，方便调试和监控。
 
-## Example folder contents
+---
 
-The project **hello_world** contains one source file in C language [hello_world_main.c](main/hello_world_main.c). The file is located in folder [main](main).
+## **开发环境**
+- **硬件平台**：ESP32-P4
+- **开发框架**：ESP-IDF（≥v5.4.0）
+- **编程语言**：C
+- **工具链**：
+  - VSCode + ESP-IDF 插件
+  - idf.py 构建工具
 
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt` files that provide set of directives and instructions describing the project's source files and targets (executable, library, or both).
+---
 
-Below is short explanation of remaining files in the project folder.
+## **项目结构**
+```plaintext
+.
+├── main/
+|   ├── drivers/
+|      ├── audio/
+|      ├── lvgl/
+|      ├── mcpwm/
+|      ├── mpu6050/
+|      └── ws2812/
+│   ├── main.c               // 主程序入口
+├── sdkconfig                // 项目配置文件
+└── README.md                // 项目说明文档
 
-```
-├── CMakeLists.txt
-├── pytest_hello_world.py      Python script used for automated testing
-├── main
-│   ├── CMakeLists.txt
-│   └── hello_world_main.c
-└── README.md                  This is the file you are currently reading
-```
-
-For more information on structure and contents of ESP-IDF projects, please refer to Section [Build System](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/build-system.html) of the ESP-IDF Programming Guide.
-
-## Troubleshooting
-
-* Program upload failure
-
-    * Hardware connection is not correct: run `idf.py -p PORT monitor`, and reboot your board to see if there are any output logs.
-    * The baud rate for downloading is too high: lower your baud rate in the `menuconfig` menu, and try again.
-
-## Technical support and feedback
-
-Please use the following feedback channels:
-
-* For technical queries, go to the [esp32.com](https://esp32.com/) forum
-* For a feature request or bug report, create a [GitHub issue](https://github.com/espressif/esp-idf/issues)
-
-We will get back to you as soon as possible.
