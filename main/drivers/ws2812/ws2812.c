@@ -208,7 +208,7 @@ void bsp_ws2812_init(void)
     led_strip = configure_led();
 }
 
-static void ws2812_handler(void)
+static void ws2812_handler(void *pvParameters)
 {
     uint16_t base_hue = 0; // 基础色调
     const uint8_t saturation = 255; // 饱和度 (最大值 255)

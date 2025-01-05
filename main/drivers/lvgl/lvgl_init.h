@@ -104,6 +104,8 @@ typedef struct {
 } bsp_display_cfg_t;
 
 void display_init(void);
+esp_err_t bsp_i2c_init(void);
+i2c_master_bus_handle_t bsp_i2c_get_handle(void);
 
 #endif
 
