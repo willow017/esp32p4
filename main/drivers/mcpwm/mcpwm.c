@@ -15,7 +15,7 @@
 #include "bdc_motor.h"
 #include "pid_ctrl.h"
 
-static const char *TAG = "example";
+static const char *TAG = "HK_PWM";
 
 // Enable this config,  we will print debug formated string, which in return can be captured and parsed by Serial-Studio
 #define SERIAL_STUDIO_DEBUG           CONFIG_SERIAL_STUDIO_DEBUG
