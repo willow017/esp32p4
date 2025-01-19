@@ -14,6 +14,7 @@
 #include "drivers/ws2812/ws2812.h"
 #include "drivers/lvgl/lvgl_init.h"
 #include "mpu6050.h"
+#include "mcpwm.h"
 
 static const char *TAG = "HK";
 
@@ -21,6 +22,7 @@ void bsp_init(void)
 {
     bsp_ws2812_init();
     mpu6050_init();
+    mcpwm_init();
 }
 
 esp_err_t bsp_spiffs_mount(void)

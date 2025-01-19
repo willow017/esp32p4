@@ -17,11 +17,13 @@
 
 static const char *TAG = "HK_PWM";
 
+TaskHandle_t mcpwmTaskHandle = NULL;
+
 // Enable this config,  we will print debug formated string, which in return can be captured and parsed by Serial-Studio
 #define SERIAL_STUDIO_DEBUG           CONFIG_SERIAL_STUDIO_DEBUG
 
 #define BDC_MCPWM_TIMER_RESOLUTION_HZ 10000000 // 10MHz, 1 tick = 0.1us
-#define BDC_MCPWM_FREQ_HZ             25000    // 25KHz PWM
+#define BDC_MCPWM_FREQ_HZ             50000    // 25KHz PWM
 #define BDC_MCPWM_DUTY_TICK_MAX       (BDC_MCPWM_TIMER_RESOLUTION_HZ / BDC_MCPWM_FREQ_HZ) // maximum value we can set for the duty cycle, in ticks
 #define BDC_MCPWM_GPIO_A              32
 #define BDC_MCPWM_GPIO_B              25
@@ -65,7 +67,7 @@ static void pid_loop_cb(void *args)
     bdc_motor_set_speed(motor, (uint32_t)new_speed);
 }
 
-void mcpwm_main(void)
+static void mcpwm_main(void *pvParameters)
 {
     static motor_control_context_t motor_ctrl_ctx = {
         .pcnt_encoder = NULL,
@@ -163,4 +165,10 @@ void mcpwm_main(void)
         printf("/*%d*/\r\n", motor_ctrl_ctx.report_pulses);
 #endif
     }
+}
+
+bool mcpwm_init(void)
+{
+    xTaskCreatePinnedToCore(mcpwm_main, "mcpwm_main", 4096*2, NULL, 4, &mcpwmTaskHandle, 1);
+    return 1;
 }
